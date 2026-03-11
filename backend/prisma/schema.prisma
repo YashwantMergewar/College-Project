@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  fullname  String
+  username  String
+  email     String    @unique
+  password  String
+  role      Role
+  isMentor  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  refreshToken String?
+  batches   Batch[]
+  students  Student[]
+}
+
+model Batch {
+  id        String    @id @default(uuid())
+  batchCode String    @unique
+  section   String?
+  size      Int
+  mentorId  String
+  createdAt DateTime  @default(now())
+  mentor    User      @relation(fields: [mentorId], references: [id])
+  students  Student[]
+}
+
+model Student {
+  id         String   @id @default(uuid())
+  rollNo     Int
+  registerNo String   @unique
+  name       String
+  email      String?
+  phone      String?
+  batchId    String
+  mentorId   String
+  createdAt  DateTime @default(now())
+  batch      Batch    @relation(fields: [batchId], references: [id])
+  mentor     User     @relation(fields: [mentorId], references: [id])
+
+  @@unique([rollNo, batchId])
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
