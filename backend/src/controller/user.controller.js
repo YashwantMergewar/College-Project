@@ -195,4 +195,52 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
-export { registerUser, loginUser, logoutUser };
+const getAllUserStaff = asyncHandler(async (req, res) => {
+  const staff = await prisma.user.findMany({
+    where: {
+      role: "STAFF"
+    },
+    omit: {
+      password: true,
+      refreshToken: true,
+      createdAt: true
+    }
+  })
+
+  if(!staff){
+    throw new ApiError(404, "No Staff Found..!")
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, staff, "Staff fetched Successfully..!")
+  )
+})
+
+const getAllUserMentor = asyncHandler(async (req, res) => {
+  const mentor = await prisma.user.findMany({
+    where: {
+      isMentor: true
+    },
+    omit: {
+      password: true,
+      refreshToken: true,
+      createdAt: true
+    }
+  })
+
+  if(!mentor){
+    throw new ApiError(404, "No Mentor Found..!")
+  } 
+
+  return res.status(200).json(
+    new ApiResponse(200, mentor, "Mentor fetched Successfully..!")
+  )
+})
+
+export {
+   registerUser, 
+   loginUser, 
+   logoutUser,
+   getAllUserStaff,
+   getAllUserMentor
+};
