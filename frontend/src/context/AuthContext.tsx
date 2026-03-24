@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const res = await logoutUser();
             if(res && res.statusCode === 200){
                 setUser(null);
+                
             }
             return res;
         } catch (error) {

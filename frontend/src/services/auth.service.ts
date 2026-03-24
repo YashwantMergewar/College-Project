@@ -1,3 +1,4 @@
+import { removeToken } from "@/utils/secureStore";
 import API from "./api";
 
 const registerUser = async (userData: any) => {
@@ -21,6 +22,7 @@ const loginUser = async (userData: any) => {
 const logoutUser = async () => {
     try {
         const response = await API.post("/users/logout-user")
+        await removeToken();
         return response.data
     } catch (error) {
         console.log("Error while logging out user", error);
