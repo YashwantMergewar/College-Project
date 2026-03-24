@@ -16,6 +16,9 @@ COPY . .
 # Generate Prisma client
 RUN npx prisma generate
 
+# 🔥 IMPORTANT for production
+RUN npx prisma migrate deploy
+
 # Expose backend port
 EXPOSE 5005
 
