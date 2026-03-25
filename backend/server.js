@@ -6,9 +6,9 @@ import app from './app.js';
 const PORT = process.env.PORT || 5001;
 
 connectDB().then(() => {
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
     console.log("Database Connected Successfully");
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on http://0.0.0.0:${PORT} (reachable from LAN / hotspot)`);
     })
 }).catch((error) => {
     console.error("Failed to connect to the database:", error);
